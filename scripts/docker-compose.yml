@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   spring-petclinic:
-    images: akxlfekdb/spring-petclinic:latest
+    image: akxlfekdb/spring-petclinic:latest
     container_name: spring-petclinic
     ports:
       - "80:8080"
