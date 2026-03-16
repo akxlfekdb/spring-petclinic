@@ -91,7 +91,6 @@ pipeline {
            --deployment-config-name CodeDeployDefault.OneAtATime \
            --service-role-arn arn:aws:iam::491085389788:role/user06-code-deploy-service-role
            '''
-        }
         sh '''
            aws deploy create-deployment --application-name user06-code-deploy \
            --deployment-config-name CodeDeployDefault.OneAtATime \
@@ -99,6 +98,7 @@ pipeline {
            --s3-location bucket=user06-codedeploy-bucket,bundleType=zip,key=scripts.zip
            '''
         sleep(10) // sleep 10s
+       }
       }
     }
   }
