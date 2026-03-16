@@ -78,15 +78,16 @@ pipeline {
         }
       }
     }
-
+//aws deploy create-deployment-group \
+//--auto-scaling-groups USER06-ASG-TARGET \
+// --deployment-group-name user06-code-deploy-${BUILD_NUMBER} \
    // Code Deploy
    stage('Codedeploy Workload') {
       steps {
         sh '''
-           aws deploy create-deployment-group \
+           aws deploy create-deployment \
            --application-name user06-code-deploy \
-           --auto-scaling-groups USER06-ASG-TARGET \
-           --deployment-group-name user06-code-deploy-${BUILD_NUMBER} \
+           --deployment-group-name user06-deploy-group \
            --deployment-config-name CodeDeployDefault.OneAtATime \
            --service-role-arn arn:aws:iam::491085389788:role/user06-code-deploy-service-role
            '''
