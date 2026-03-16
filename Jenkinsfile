@@ -83,22 +83,23 @@ pipeline {
    stage('Codedeploy Workload') {
       steps {
         withAWS(region:"${REGION}", credentials:"${AWS_CREDENTIALS_NAME}") {
-        sh '''
-           aws deploy create-deployment-group \
-           --application-name user06-code-deploy \
-           --auto-scaling-groups USER06-ASG-TARGET \
-           --deployment-group-name user06-code-deploy-${BUILD_NUMBER} \
-           --deployment-config-name CodeDeployDefault.OneAtATime \
-           --service-role-arn arn:aws:iam::491085389788:role/user06-code-deploy-service-role
-           '''
-        sh '''
-           aws deploy create-deployment --application-name user06-code-deploy \
-           --deployment-config-name CodeDeployDefault.OneAtATime \
-           --deployment-group-name user06-code-deploy-${BUILD_NUMBER} \
-           --s3-location bucket=user06-codedeploy-bucket,bundleType=zip,key=scripts.zip
-           '''
+          sh '''
+             aws deploy create-deployment-group \
+             --application-name user06-code-deploy \
+             --auto-scaling-groups USER06-ASG-TARGET \
+             --deployment-group-name user06-code-deploy-${BUILD_NUMBER} \
+             --deployment-config-name CodeDeployDefault.OneAtATime \
+             --service-role-arn arn:aws:iam::491085389788:role/user06-code-deploy-service-role
+             '''
+          sh '''
+             aws deploy create-deployment --application-name user06-code-deploy \
+             --deployment-config-name CodeDeployDefault.OneAtATime \
+             --deployment-group-name user06-code-deploy-${BUILD_NUMBER} \
+             --s3-location bucket=user06-codedeploy-bucket,bundleType=zip,key=scripts.zip
+             '''
+        }
+
         sleep(10) // sleep 10s
-       }
       }
     }
   }
