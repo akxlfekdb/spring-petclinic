@@ -71,23 +71,23 @@ pipeline {
         echo 'Upload to S3'
         dir("${env.WORKSPACE}") {
             sh 'zip -r scripts.zip ./scripts appspec.yml'
-            withAWS(region:"${REGION}", credentials: 'AWSCredentials') { //"${AWS_CREDENTIALS_NAME}") { 
+            withAWS(region:"${REGION}", credentials:"${AWS_CREDENTIALS_NAME}") {
               s3Upload(file:"scripts.zip", bucket:"user06-codedeploy-bucket")
             }
             sh 'rm -rf ./scripts.zip'
         }
       }
     }
-//aws deploy create-deployment-group \
-//--auto-scaling-groups USER06-ASG-TARGET \
-// --deployment-group-name user06-code-deploy-${BUILD_NUMBER} \
+
    // Code Deploy
    stage('Codedeploy Workload') {
       steps {
+        withAWS(region:"${REGION}", credentials:"${AWS_CREDENTIALS_NAME}") {
         sh '''
-           aws deploy create-deployment \
+           aws deploy create-deployment-group \
            --application-name user06-code-deploy \
-           --deployment-group-name user06-deploy-group \
+           --auto-scaling-groups USER06-ASG-TARGET \
+           --deployment-group-name user06-code-deploy-${BUILD_NUMBER} \
            --deployment-config-name CodeDeployDefault.OneAtATime \
            --service-role-arn arn:aws:iam::491085389788:role/user06-code-deploy-service-role
            '''
