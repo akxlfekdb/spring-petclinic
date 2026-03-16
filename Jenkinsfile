@@ -91,6 +91,7 @@ pipeline {
            --deployment-config-name CodeDeployDefault.OneAtATime \
            --service-role-arn arn:aws:iam::491085389788:role/user06-code-deploy-service-role
            '''
+        }
         sh '''
            aws deploy create-deployment --application-name user06-code-deploy \
            --deployment-config-name CodeDeployDefault.OneAtATime \
